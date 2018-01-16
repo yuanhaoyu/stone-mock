@@ -1,0 +1,25 @@
+[{
+   "url": "/test",
+   "rule": "test",
+   "data": [
+       {"name": "@r12312"},
+       {"name": 2},
+       {"name": "@r"},
+       {"name": [
+           {"test":1},
+           {"test":2},
+           {"test":"@r"}
+       ]}
+   ]
+}, {
+    "url": "/login",
+    "method": "post",
+    "data": {
+        "code": "200",
+        "msg": "success",
+        "data": {
+            "userId": 1,
+            "userName": "@r"
+        }
+    }
+}]
