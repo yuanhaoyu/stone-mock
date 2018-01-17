@@ -1,25 +1,60 @@
-[{
-   "url": "/test",
-   "rule": "test",
-   "data": [
-       {"name": "@r12312"},
-       {"name": 2},
-       {"name": "@r"},
-       {"name": [
-           {"test":1},
-           {"test":2},
-           {"test":"@r"}
-       ]}
-   ]
-}, {
-    "url": "/login",
-    "method": "post",
-    "data": {
-        "code": "200",
-        "msg": "success",
+[
+    {
+        "url": "/getPeopleKind",
         "data": {
-            "userId": 1,
-            "userName": "@r"
+            "code": 200,
+            "msg": "success",
+            "data": [
+                {
+                    "id": "0000",
+                    "name": "道门"
+                },
+                {
+                    "id": "0001",
+                    "name": "佛门"
+                },
+                {
+                    "id": "0002",
+                    "name": "儒门"
+                },
+                {
+                    "id": "0003",
+                    "name": "墨家"
+                },
+                {
+                    "id": "0004",
+                    "name": "太白"
+                }
+            ]
         }
+    },
+    {
+        "url": "/getNav",
+        "data": {
+            "code": 200,
+            "msg": "success",
+            "data": [
+                {
+                    "id": "1001",
+                    "cover": "",
+                    "title": "茶社",
+                    "lock": false,
+                    "url": ""
+                },
+                {
+                    "id": "1001",
+                    "cover": "",
+                    "title": "琅琊榜",
+                    "lock": false,                    
+                    "url": ""
+                }
+            ]
+        }
+    },
+    {
+        "url": "/login",
+        "method": "post",
+        "rule": "login",
+        "data": {}
     }
-}]
+]

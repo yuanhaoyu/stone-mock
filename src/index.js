@@ -1,14 +1,17 @@
 const Koa = require('koa');
 const Router = require('koa-router');
 const cors = require('koa2-cors');
+var bodyParser = require('koa-bodyparser');
+
 const configs = require('../config/api.json');
 const rules = require('../config/rule.js');
-const base = require('../config/base.json')
+const base = require('../config/base.json');
 
 const app = new Koa();
 const router = new Router();
 
 app
+    .use(bodyParser())
     .use(cors())
     .use(router.routes())
     .use(router.allowedMethods())
