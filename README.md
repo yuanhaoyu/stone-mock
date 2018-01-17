@@ -76,5 +76,6 @@ function test (data, ctx) {
 
 ## 5. To do
 
-* [] 增加header设置
-* [] 融合代理服务
+- [ ] 增加header设置
+- [ ] 融合代理服务
+- [ ] 可视化支持

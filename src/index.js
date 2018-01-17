@@ -33,7 +33,13 @@ configs.map(data => {
             });
             break;
         case 'delete':
- v
+            router.delete(data.url, (ctx, next) => { 
+                let result = setData(data.data);                
+                if (data.rule) {
+                    result = rules[data.rule] (result, ctx);
+                }
+                ctx.body = result;
+            });
             break;
         case 'update':
             router.update(data.url, (ctx, next) => { 
