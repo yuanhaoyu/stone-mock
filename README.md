@@ -13,7 +13,18 @@ npm install stone-mock
 - Then ... happy start 🚗
 
 ```bash
-npm run start
+const Smock = require('stone-mock');
+const configs = require('./config/api.json');
+const rules = require('./config/rule.js');
+const base = require('./config/base.json');
+
+Smock(configs, rules, base);
+```
+
+- or u can choose git, clone it then npm run start
+
+```bash
+git clone https://github.com/yuanhaoyu/stone-mock.git
 ```
 
 ## Usage

@@ -1,10 +1,10 @@
 {
   "name": "stone-mock",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "stone-mock is a simple mock tool",
   "main": "./src/index.js",
   "scripts": {
-    "start": "node ./src/index.js"
+    "start": "node ./index.js"
   },
   "author": "houn",
   "license": "MIT",
