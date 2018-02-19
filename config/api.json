@@ -56,5 +56,11 @@
         "method": "post",
         "rule": "login",
         "data": {}
+    },
+    {
+        "url": "/test/proxy",
+        "proxy": true,
+        "method": "get",
+        "sourceUrl": "https://www.llamastudio.cn/testapi/imgtest/0/5"
     }
 ]

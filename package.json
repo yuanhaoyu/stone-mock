@@ -1,14 +1,15 @@
 {
-  "name": "smock",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "name": "stone-mock",
+  "version": "1.0.0",
+  "description": "stone-mock is a simple mock tool",
+  "main": "./src/index.js",
   "scripts": {
     "start": "node ./src/index.js"
   },
   "author": "houn",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
+    "axios": "^0.17.1",
     "body-parser": "^1.18.2",
     "koa": "^2.4.1",
     "koa-bodyparser": "^2.5.0",
