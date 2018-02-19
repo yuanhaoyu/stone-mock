@@ -87,7 +87,7 @@ Smock 也支持代理转发，我们默认使用axios来转发，使用转发也
 
 ## To do
 
-- [ x ] proxy support
+- [x] proxy support
 - [ ] add header config
 - [ ] visualizationsupport
 - [ ] pm2 default support
