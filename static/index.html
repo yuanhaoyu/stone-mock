@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Stone-mock API preview</title>
+    <link rel="stylesheet" type="text/css" href="./lib/dataTables.css">
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8" src="./lib/jquery-1.10.2.min.js"></script>
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8" src="./lib/jquery.dataTables.js"></script>
+</head>
+<body>
+    <header>
+        <h2>Stone-mock API preview</h2>
+    </header>
+    <hr>
+    <table id="table_id_example" class="display">
+        <thead>
+            <tr>
+                <th>序号</th>
+                <th>方法</th>
+                <th>url</th>
+                <th>代理</th>
+                <th>规则</th>
+                <th>JSON返回</th>
+            </tr>
+        </thead>
+    </table>
+</body>
+<script>
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '//127.0.0.1:3002/allApi',true);
+    xhr.send();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState==4 && xhr.status==200) {
+            apiArr = JSON.parse(xhr.responseText);
+            main(apiArr);
+        }
+    }
+
+    function main(arr) {
+        let tempArr = [];
+        arr.map((data, index) => {
+            tempArr.push(
+                {
+                    'id': index,
+                    'method': data.method || 'get',
+                    'url': data.url || 'unkonw url',
+                    'sourceUrl': data.proxy ? (data.sourceUrl || 'unset proxy') : 'unset proxy',
+                    'rule': data.rule || 'unset rule',
+                    'data': JSON.stringify(data.data) || '{}'
+                }
+            )
+        })
+        $(document).ready( function () {
+            $('#table_id_example').DataTable({
+                data: tempArr,
+                columns: [
+                    {data: 'id'},
+                    { data: 'method' },              
+                    { data: 'url' },
+                    { data: 'sourceUrl' },
+                    { data: 'rule' },
+                    { data: 'data' },
+                ]
+            });
+        } );
+    }
+</script>
+</html>

@@ -14,11 +14,11 @@ npm install stone-mock
 
 ```bash
 const Smock = require('stone-mock');
-const configs = require('./config/api.json');
+const apis = require('./config/api.json');
 const rules = require('./config/rule.js');
 const base = require('./config/base.json');
 
-Smock(configs, rules, base);
+Smock(apis, rules, base);
 ```
 
 - or u can choose git, clone it then npm run start
@@ -29,7 +29,7 @@ git clone https://github.com/yuanhaoyu/stone-mock.git
 
 ## Usage
 
-超简单的配置，只需以json数组的方式写你想返回的接口的值，以及接口调用的方法，参考如下：
+超简单的配置，完成init后，对于apis.json只需以json数组的方式写你想返回的接口的值，以及接口调用的方法，参考如下：
 
 ```javascript
 [{
@@ -56,7 +56,7 @@ git clone https://github.com/yuanhaoyu/stone-mock.git
 
 ### rule
 
-Smock并不是很鼓励使用rule，因为你又回到了写代码处理逻辑的时候，但是在你必要的时候，你可以为你的接口增加规则（**规则这里只支持javascript代码**), 在config里面声明rule字段，然后后面写上对应的rule的函数名，最后在config目录的rule.js 写上你要制定的规则函数即可，函数接口如下：
+Smock并不是很鼓励使用rule，因为你又回到了写代码处理逻辑的时候，但是在你必要的时候，你可以为你的接口增加规则（**规则这里只支持javascript代码**), 在apis里面声明rule字段，然后后面写上对应的rule的函数名，最后在config目录的rule.js 写上你要制定的规则函数即可，函数接口如下：
 
 ```javascript
 function test (data, ctx) {
@@ -82,7 +82,7 @@ Smock 也支持代理转发，我们默认使用axios来转发，使用转发也
 
 ## Base config
 
-当然为了让你更好的离开代码，专心于各种json的配置。Smock抽离了最基本的base.json，你可以用它设置一些基础选项。
+当然Smock也提供基本的base.json，你可以用它设置一些基础选项。
 
 ### port
 	
@@ -95,10 +95,12 @@ Smock 也支持代理转发，我们默认使用axios来转发，使用转发也
 ### randomSource：
 	Smock生成随机数据的数据源，默认为abc
 
+## Visualization
+Smock现在也支持可视化，默认情况访问127.0.0.1:端口号/index.html 可查看你设置的Smock的api的情况。
 
 ## To do
 
 - [x] proxy support
-- [ ] add header config
-- [ ] visualizationsupport
+- [x] visualizationsupport
 - [ ] pm2 default support
+- [ ] add header config

@@ -1,6 +1,6 @@
 {
   "name": "stone-mock",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "stone-mock is a simple mock tool",
   "main": "./src/index.js",
   "scripts": {
@@ -14,6 +14,7 @@
     "koa": "^2.4.1",
     "koa-bodyparser": "^2.5.0",
     "koa-router": "^7.3.0",
+    "koa-static": "^4.0.2",
     "koa2-cors": "^2.0.5"
   }
 }
