@@ -1,5 +1,6 @@
 const Koa = require('koa');
 const path = require('path');
+const fs = require('fs');
 const Router = require('koa-router');
 const cors = require('koa2-cors');
 const axios = require('axios');
@@ -28,9 +29,12 @@ const Smock = (apis, rules, base) => {
      * router -- all api.json
      */
 
-    router.get('/allApi', async (ctx, next) => {
-        ctx.body = apis;           
-    });  
+    router.get('/home',async (ctx, next) => {
+        ctx.type = 'html';        
+        let data = await tool.readfile(path.join(__dirname,'../static/index.html'), 'utf8');
+        data = data + `<script>window.APIJSONS = ${JSON.stringify(apis)};</script>`;
+        ctx.body = data;
+    });
 
     /**
      * otherRouter 

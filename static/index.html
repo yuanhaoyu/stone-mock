@@ -30,15 +30,13 @@
     </table>
 </body>
 <script>
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '//127.0.0.1:3002/allApi',true);
-    xhr.send();
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState==4 && xhr.status==200) {
-            apiArr = JSON.parse(xhr.responseText);
-            main(apiArr);
+    setTimeout(() => {
+        if(window.APIJSONS && window.APIJSONS.length>0) {
+            main(window.APIJSONS);
+        } else {
+            alert('请设置api的值！');
         }
-    }
+    }, 0);
 
     function main(arr) {
         let tempArr = [];
