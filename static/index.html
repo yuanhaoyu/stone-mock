@@ -21,9 +21,9 @@
             <tr>
                 <th>序号</th>
                 <th>方法</th>
-                <th>url</th>
-                <th>代理</th>
-                <th>规则</th>
+                <th>path</th>
+                <th>类型</th>
+                <th>mock</th>
                 <th>JSON返回</th>
             </tr>
         </thead>
@@ -44,11 +44,11 @@
             tempArr.push(
                 {
                     'id': index,
-                    'method': data.method || 'get',
-                    'url': data.url || 'unkonw url',
-                    'sourceUrl': data.proxy ? (data.sourceUrl || 'unset proxy') : 'unset proxy',
-                    'rule': data.rule || 'unset rule',
-                    'data': JSON.stringify(data.data) || '{}'
+                    'method': data.method || 'all',
+                    'path': data.path || 'unkonw path',
+                    'type': data.type ||'data',
+                    'mock': data.mock || 'false',
+                    'data': JSON.stringify(data.value) || '{}'
                 }
             )
         })
@@ -58,13 +58,13 @@
                 columns: [
                     {data: 'id'},
                     { data: 'method' },              
-                    { data: 'url' },
-                    { data: 'sourceUrl' },
-                    { data: 'rule' },
+                    { data: 'path' },
+                    { data: 'type' },
+                    { data: 'mock' },
                     { data: 'data' },
                 ]
             });
-        } );
+        });
     }
 </script>
 </html>

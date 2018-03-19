@@ -1,24 +1,15 @@
 # stone-mock
----
-🔧 stone-mock (Smock) 是一款基于配置的简单mock工具
+[![stone-mock](https://img.shields.io/badge/stone--mock-v2.0.0-orange.svg)](https://www.npmjs.com/package/stone-mock)
+
+stone-mock (Smock) 是一款基于配置的简单易扩展的mock工具🔧 
 
 ##  Installation
 
 ### NPM
 
-```npm
-npm install stone-mock
-```
-
-Then load and happy start 🚗
 
 ```bash
-const Smock = require('stone-mock');
-const apis = require('./config/api.json');
-const rules = require('./config/rule.js');
-const base = require('./config/base.json');
-
-Smock(apis, rules, base);
+npm install stone-mock
 ```
 
 ### Git
@@ -26,88 +17,172 @@ Smock(apis, rules, base);
 ```bash
 git clone https://github.com/yuanhaoyu/stone-mock.git
 
+cd stone-mock && npm install
+
 ```
+
 
 ## Usage
 
-如果你使用git安装，那么你就可以在config文件夹下面看到已经预设的三个文件，分别会在下面说明他们的用处。
+### NPM
 
-如果你使用npm按照，那么你需要想上面所述的引入3个文件，使其分别作为Smock的参数。
-
-对于基础的api配置，操作十分简单。你只需在apis.json文件中以json数组的方式写你想返回的接口的值，以及接口调用的方法，参考如下：
+new a file named<code>smock.config.js</code>
 
 ```javascript
-[{
-   "url": "/test",
-   "data": [
-       {"name": "2r12312"},
-       {"name": 2},
-       {"name": "23"},
-       {"name": [
-           {"test":1},
-           {"test":2},
-           {"test":"32"}
-       ]}
-   ]
-}]
+const { Smock } = require('stone-mock');
+
+const config = {
+    port: 3005,
+    baseUrl: '',
+    preview: '/preview'
+}
+
+const datas = [
+  {
+    path: '/test',
+    type: 'data',
+    value: {
+     test: 'test'
+    }
+  }
+]
+
+const smock = new Smock(datas, config);
+smock.init();
 ```
-对于Smock来说，我们必要的2个最外层字段是data和url，一个代表Smock为你返回的模拟数据，一个代表Smock为你开启的接口地址。
 
-## More
+then happy start 🚗
 
-### random
+```bash
+node smock.config.js
+```
+### Git
 
-在字段里面声明@r，Smock即将为你生成制定字数的随机数据。
+```bash
+npm run start
+```
 
-### rule
+## Smock(datas, config)
 
-Smock并不是很鼓励使用rule，因为你又回到了写代码处理逻辑的时候，但是在你必要的时候，你可以为你的接口增加规则（**规则这里只支持javascript代码**), 在apis里面声明rule字段，然后后面写上对应的rule的函数名，最后在config目录的rule.js 写上你要制定的规则函数即可，函数接口如下：
+
+### datas
+
+smock接受一个数组作为datas用来生成apis，datas的每一项，Smock也有严格的规定，他必须是一个对象并且拥有以下属性
+
+- path
+- type
+- vaule
+- method
+- mock
+
+#### path
+path就是你定义的api地址
+
+#### type
+type是一个可选择的属性，他支持"function" || "store" || "data" || "proxy" 四种类型。
+
+- function 默认参数为ex，你可以用ex.ctx访问koa的上下文，也可以ex.Mock自定义mock
+
+- store 使用store后，会以restful的模式自动创建，一级子资源接口。如下：
 
 ```javascript
-function test (data, ctx) {
-  // do something
-  return data
+{
+  'path': '/user',
+  'type': 'store',
+  'value': [
+    {
+      id: 1,
+      name: 'sam'
+    },
+    {
+     id: 2,
+     name: 'amy'
+    }
+  ]
 }
 ```
+当你访问/user的时候就得到上面value的结果，当你访问/user/1 就自动获取id=1的那条内容
 
-其中data是接口返回的模拟数据，ctx是koa-router的上下文。
+- proxy: 将value中填入你要代理的url（当前只支持get方式的）
+- data: 模拟数据，type的默认值。
 
-详细的可以参考初始化demo
+#### value
+模拟接口返回的值
 
-### proxy
+#### method
+method即调用接口的方法，默认为get，如果想支持所有方法，请设置为"all"
 
-Smock 也支持代理转发，我们默认使用axios来转发，使用转发也十分简单，在我们的api的配置里面加入这3个额外的字段，快速开始。
+#### mock
+即是否开启mock模式，他是一个Boolean，默认为false，当为true即开启mock模式，可以使用mockjs的语法进行mock。
 
-- proxy: Boolean类型，来确认是否开启代理。
+---
 
-- sourceUrl: String类型，转发接口的原地址。
+### config
 
-- query: query会根据不同方法，作为参数。
+smock接受一个对象作为config用来配置，其中包括
+
+- port : Number 
+- baseUrl : String 
+- preview : String 
+- setResponse : Function
+
+#### port
+Smock服务使用的端口，默认为3003
+
+#### baseUrl
+所有接口的前置url，默认为空
+
+#### preview
+接口可视化页面的路由，默认为/apis
+
+#### setResponse
+统一处理接口返回的格式，默认为
+
+```javascript
+ {
+      code: 200,
+      msg: "success",
+      data: "mock value"
+  }
+```
+
+## init
+完成Smock的实例化后，我们可以用init方法来开启服务。
+
+```javascript
+const smock = new Smock(datas, config);
+smock.init();
+```
+
+## composeFactory
+为了更好的管理接口，Smock建议将相关接口作为一个单独文件，然后用module.exports = [] 的方法将其导出，然后Smock提供composeFactory方法将多个数组合并成一个。
 
 
-## Base config
+```javascript
+const { composeFactory } = new require('../src/index');
 
-当然Smock也提供基本的base.json，你可以用它设置一些基础选项。
+// apis
+const nav = require('./api/nav');
+const login = require('./api/user/login');
+const kind = require('./api/user/kind');
+const luck = require('./api/user/luck');
 
-### port
-	
-	Smock默认开启的端口服务，默认3000
+// stores
+const topic = require('./store/topic');
+const indexPhoto = require('./store/index/photo');
 
-### random
-
-	Smock默认生成随机数据的长度，默认为5
-
-### randomSource：
-	Smock生成随机数据的数据源，默认为abc
+module.exports = composeFactory(
+    nav,
+    login,
+    luck,
+    kind,
+    topic,
+    indexPhoto
+);
+```
 
 ## Visualization
-**Smock现在也支持可视化**
+**Smock支持可视化查看所有接口**
 
-默认情况访问**127.0.0.1:端口号/home**,即可查看你设置的Smock。
+默认情况访问**127.0.0.1:端口号/apis**,即可查看你设置的Smock。
 
-## To do
-
-- [x] proxy support
-- [x] visualizationsupport
-- [ ] pm2 default support
-- [ ] add header config
