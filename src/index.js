@@ -45,15 +45,16 @@ class Smock {
         let _port = this.config && this.config.port || default_conifg.port;
         app.listen(_port, () => {
             console.log(`
-            ***             *          *              ***
-            ********     ********   ********      *******
-            **  ******   **    **   **    **    ****  ***
-            *****  ***************************  *********
-            *********  Happy use stone-mock  ************
-            ****  *****************************  ********
-            ** server on : http://127.0.0.1:${_port} ********
-            ** apis   on : http://127.0.0.1:${_port + this.preview} *
-            *********************************************   
+            ****-----------------------------------------
+            ||    🚗    Happy use stone-mock  🚗    
+            ---------------------------------------------
+            || server on : http://127.0.0.1:${_port}   
+            ---------------------------------------------
+            || apis   on : http://127.0.0.1:${_port + this.preview} 
+            ---------------------------------------------
+            ----------------    👏👏👏    ------------------
+            || more : https://github.com/yuanhaoyu/stone-mock
+            -----------------------------------------------            
             `);
         });
     }
@@ -83,9 +84,22 @@ class Smock {
         router[method](path, (ctx, next) => {
             const ex = {
                 ctx,
-                Mock
+                Mock,
+                query: ctx.query, // get params {}
+                body: ctx.request.body, // post params {}
+                params: ctx.params // like url:id params {}
             };
-            ctx.body = this._setResponse(fun(ex));
+            try {
+                let tempResult = fun(ex);
+                if ( tempResult && tempResult['@error']) {
+                    ctx.body = tempResult['@error'];
+                } else {
+                    ctx.body = this._setResponse(tempResult);
+                }
+            } catch (error) {
+                ctx.body = { code: 500, msg: '' + error };
+                console.log('❌  API ' + path + ' has error : ' + error);
+            }
         });
     }
     _findStore(id, path) {

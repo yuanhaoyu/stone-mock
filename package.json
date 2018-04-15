@@ -1,10 +1,10 @@
 {
   "name": "stone-mock",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A happy and easy mock tool",
   "main": "./src/index.js",
   "scripts": {
-    "start": "node ./smock.config.js"
+    "start": "node ./app.js"
   },
   "repository": {
     "type": "git",

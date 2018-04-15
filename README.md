@@ -1,5 +1,5 @@
 # stone-mock
-[![stone-mock](https://img.shields.io/badge/stone--mock-v2.0.0-orange.svg)](https://www.npmjs.com/package/stone-mock)
+[![stone-mock](https://img.shields.io/badge/stone--mock-v2.0.1-orange.svg)](https://www.npmjs.com/package/stone-mock)
 
 stone-mock (Smock) 是一款基于配置的简单易扩展的mock工具🔧 
 
@@ -26,7 +26,7 @@ cd stone-mock && npm install
 
 ### NPM
 
-new a file named<code>smock.config.js</code>
+new a file named<code>app.js</code>
 
 ```javascript
 const { Smock } = require('stone-mock');
@@ -54,7 +54,7 @@ smock.init();
 then happy start 🚗
 
 ```bash
-node smock.config.js
+node app.js
 ```
 ### Git
 
@@ -81,7 +81,7 @@ path就是你定义的api地址
 #### type
 type是一个可选择的属性，他支持"function" || "store" || "data" || "proxy" 四种类型。
 
-- function 默认参数为ex，你可以用ex.ctx访问koa的上下文，也可以ex.Mock自定义mock
+- function 默认参数为ex，你可以用ex.ctx访问koa的上下文，也可以ex.Mock自定义mock，为了你更方便的在function里随心所欲，我们同样封装了ex.query 可获取get请求参数，ex.body 可获取post请求参数，ex.params 可获取url参数。[**ex.query/ex.body/ex.params 均返回一个对象**]
 
 - store 使用store后，会以restful的模式自动创建，一级子资源接口。如下：
 
@@ -145,6 +145,31 @@ Smock服务使用的端口，默认为3003
       data: "mock value"
   }
 ```
+当然你或许想要根据不同的输入得到不同的code返回，这里就需要<code>@error</code>配合<code>type: 'function' </code>使用，如下面这个登录的例子。
+
+```javascript
+{
+  path: 'login',
+  method: 'post',
+  type: 'function',
+  value: function(ex) {
+    if (ex.body.username === 'houn' && ex.body.password === '123') {
+      return {
+        username: 'houn',
+        userId: '102123122'
+       }
+     } else {
+       return {
+         '@error': {
+           code: '203',
+           msg: '登录失败'
+          }
+        }
+     }
+   }
+}
+```
+只要你的返回中含有@error时，我们会直接获取@error的值作为你的返回，所以一定要谨慎使用**@error 字段**。
 
 ## init
 完成Smock的实例化后，我们可以用init方法来开启服务。
